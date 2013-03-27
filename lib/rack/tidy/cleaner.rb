@@ -1,4 +1,5 @@
-require 'tidy'
+#require 'tidy'
+require 'simple-tidy'
 
 module Rack::Tidy
   # This class is the interface between Rack and the Tidy gem
@@ -19,7 +20,6 @@ module Rack::Tidy
     attr_accessor :ignore_paths
                 
     def initialize(app, options = {})
-      ::Tidy.path = TIDY_LIB
       @app = app
       self.ignore_paths = options[:ignore_paths] || []
       self.tidy_options = DEFAULT_TIDY_OPTS.merge(options)
@@ -57,7 +57,7 @@ module Rack::Tidy
       end
       
       def tidy_markup(content) #:nodoc:
-        ::Tidy.open(self.tidy_options) { |tidy| tidy.clean(content) }
+				SimpleTidy.clean content, self.tidy_options
       end
   end
 end
