@@ -57,7 +57,11 @@ module Rack::Tidy
       end
       
       def tidy_markup(content) #:nodoc:
-				SimpleTidy.clean content, self.tidy_options
-      end
+				tidy = SimpleTidy.new self.tidy_options
+				output = tidy.clean(content)
+				warnings = tidy.instance_variable_get(:"@warnings")
+				puts "Tidy5 warnings:\n#{warnings.map{|m| " - #{m}"}.join("\n")}"
+				output
+			end
   end
 end
